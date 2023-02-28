@@ -29,7 +29,7 @@ export class LoginComponent {
     })
       .subscribe({
         next: () => {
-          // this._router.navigate(['logged-in'])
+          this._router.navigate(['logged-in'])
         },
         error: () => {
         }
