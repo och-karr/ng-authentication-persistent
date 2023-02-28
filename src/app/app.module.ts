@@ -19,7 +19,7 @@ import {STORAGE} from "./services/storage";
     HttpClientModule
   ],
   providers: [
-    { provide: STORAGE, useValue:localStorage },
+    { provide: STORAGE, useValue: localStorage },
     AuthService
   ],
   bootstrap: [AppComponent]

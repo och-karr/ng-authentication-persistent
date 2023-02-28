@@ -1,0 +1,11 @@
+<div class="home-buttons-container">
+  <div class="home-button">
+    <button type="button" mat-raised-button color="primary" [routerLink]="'/login'">Login</button>
+  </div>
+  <div class="home-button">
+    <button type="button" mat-raised-button color="primary" [routerLink]="'/logged-in'">Logged in</button>
+  </div>
+  <div class="home-button">
+    <button type="button" mat-raised-button color="primary" (click)="logoutUser()">Logout</button>
+  </div>
+</div>
