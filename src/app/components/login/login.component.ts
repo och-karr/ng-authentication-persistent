@@ -11,11 +11,8 @@ import {Router} from "@angular/router";
 })
 export class LoginComponent {
   readonly form: FormGroup = new FormGroup({
-
-    // usunac dane logowanaiiiaaaaa!!!
-
-    email: new FormControl('test@lowgular.io', [Validators.required, Validators.email]),
-    password: new FormControl('test@lowgular.io', [Validators.required]),
+    email: new FormControl('', [Validators.required, Validators.email]),
+    password: new FormControl('', [Validators.required]),
   });
 
   constructor(private _authService: AuthService, private _router: Router) {}
@@ -26,13 +23,11 @@ export class LoginComponent {
         email: form.get('email')?.value,
         password: form.get('password')?.value,
       },
-    })
-      .subscribe({
+    }).subscribe({
         next: () => {
           this._router.navigate(['logged-in'])
         },
-        error: () => {
-        }
+        error: () => {}
       })
   }
 }

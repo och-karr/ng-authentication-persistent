@@ -1,6 +1,6 @@
 import {Inject, Injectable} from '@angular/core';
 import {STORAGE} from "./storage";
-import {BehaviorSubject, Observable, tap} from "rxjs";
+import {BehaviorSubject, Observable, of, switchMap, tap} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import {AuthModel} from "../models/auth.model";
 import {AuthDataModel} from "../models/auth-data.model";
@@ -30,6 +30,32 @@ export class AuthService {
           this._storage.getItem('accessToken') ? this._loggedInSubject.next(true) : this._loggedInSubject.next(false);
         })
       )
+  }
+
+  getLoggedUser(): Observable<Object> {
+    return this._httpClient.get<Object>('https://us-central1-courses-auth.cloudfunctions.net/auth/me' );
+  }
+
+  refreshLogin(token: string | null) {
+    return this._httpClient.post<Object>(
+      'https://us-central1-courses-auth.cloudfunctions.net/auth/refresh',
+      {
+        data: {
+          refreshToken: token,
+        },
+      })
+      .pipe(
+        switchMap((credentials: any) => {
+          const accessToken = credentials.data.accessToken;
+          const refreshToken = credentials.data.refreshToken;
+          this._userAccessTokenSubject.next(accessToken);
+          this._userRefreshTokenSubject.next(refreshToken);
+          this._storage.setItem('accessToken', accessToken);
+          this._storage.setItem('refreshToken', refreshToken);
+
+          return of(credentials);
+        })
+      );
   }
 
   logout() {
