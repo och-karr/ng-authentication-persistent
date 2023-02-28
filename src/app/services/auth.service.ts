@@ -7,6 +7,9 @@ import {AuthDataModel} from "../models/auth-data.model";
 
 @Injectable()
 export class AuthService {
+  private _loggedInSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(!!this._storage.getItem('accessToken'));
+  public loggedIn$: Observable<boolean> = this._loggedInSubject.asObservable();
+
   private _userAccessTokenSubject: BehaviorSubject<string | null> = new BehaviorSubject<string | null>(this._storage.getItem('accessToken'));
   public userAccessToken$: Observable<string | null> = this._userAccessTokenSubject.asObservable();
 
@@ -24,12 +27,12 @@ export class AuthService {
           this._storage.setItem('accessToken', data.data.accessToken);
           this._userRefreshTokenSubject.next(data.data.refreshToken);
           this._storage.setItem('refreshToken', data.data.refreshToken);
+          this._storage.getItem('accessToken') ? this._loggedInSubject.next(true) : this._loggedInSubject.next(false);
         })
       )
   }
 
   logout() {
-    this._storage.removeItem('isLoggedIn');
     this._storage.removeItem('accessToken');
     this._storage.removeItem('refreshToken');
   }

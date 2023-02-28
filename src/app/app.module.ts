@@ -7,6 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from "@angular/common/http";
 import {AuthService} from "./services/auth.service";
 import {STORAGE} from "./services/storage";
+import {LoginGuard} from "./guards/login/login.guard";
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import {STORAGE} from "./services/storage";
   ],
   providers: [
     { provide: STORAGE, useValue: localStorage },
-    AuthService
+    AuthService,
+    LoginGuard
   ],
   bootstrap: [AppComponent]
 })
